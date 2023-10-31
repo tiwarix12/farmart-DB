@@ -1,15 +1,18 @@
 'use client';
 
 import { Fragment } from 'react';
-import { usePathname } from 'next/navigation';
+
 import { Disclosure, Menu, Transition } from '@headlessui/react';
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 import { signIn, signOut } from 'next-auth/react';
 import Image from 'next/image';
+ 
+import { useRouter, usePathname, useSearchParams } from 'next/navigation'
+ 
 
 const navigation = [
-  { name: 'Dashboard', href: '/' },
-  { name: 'Playground', href: '/playground' }
+  { name: 'Uploaded Files', href: '/' },
+  { name: 'Uploader', href: '/uploader' }
 ];
 
 function classNames(...classes: string[]) {
@@ -18,6 +21,7 @@ function classNames(...classes: string[]) {
 
 export default function Navbar({ user }: { user: any }) {
   const pathname = usePathname();
+  const router = useRouter();
 
   return (
     <Disclosure as="nav" className="bg-white shadow-sm">
@@ -108,15 +112,18 @@ export default function Navbar({ user }: { user: any }) {
                       ) : (
                         <Menu.Item>
                           {({ active }) => (
-                            <button
-                              className={classNames(
-                                active ? 'bg-gray-100' : '',
-                                'flex w-full px-4 py-2 text-sm text-gray-700'
-                              )}
-                              onClick={() => signIn('github')}
-                            >
-                              Sign in
-                            </button>
+                             <button
+                             onClick={() => {
+                               // signIn('github');
+                               router.push('/login'); 
+                             }}
+                             className={classNames(
+                              active ? 'bg-gray-100' : '',
+                              'flex w-full px-4 py-2 text-sm text-gray-700'
+                            )}
+                           >
+                             Sign in
+                           </button>
                           )}
                         </Menu.Item>
                       )}
@@ -179,18 +186,25 @@ export default function Navbar({ user }: { user: any }) {
                     </div>
                   </div>
                   <div className="mt-3 space-y-1">
-                    <button
-                      onClick={() => signOut()}
-                      className="block px-4 py-2 text-base font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-800"
-                    >
-                      Sign out
-                    </button>
+                  <button
+                    onClick={async () => {
+                      await signOut();
+                      router.push('/login'); // Redirect to your login page after signing out
+                    }}
+                    className="block px-4 py-2 text-base font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-800"
+                  >
+                    Sign out
+                  </button>
+
                   </div>
                 </>
               ) : (
                 <div className="mt-3 space-y-1">
                   <button
-                    onClick={() => signIn('github')}
+                    onClick={() => {
+                      // signIn('github');
+                      router.push('/login'); 
+                    }}
                     className="flex w-full px-4 py-2 text-base font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-800"
                   >
                     Sign in

@@ -25,8 +25,9 @@ export default async function IndexPage({
 
   return (
     <main className="p-4 md:p-10 mx-auto max-w-7xl">
-      <Title>Users</Title>
-      <Text>A list of users retrieved from a Postgres database.</Text>
+      
+      <Title>Uploaded Files</Title>
+      <Text>A list of short link for files retrieved from a Postgres database.</Text>
       <Search />
       <Card className="mt-6">
         <UsersTable users={users} />
