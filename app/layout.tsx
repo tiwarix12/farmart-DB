@@ -3,6 +3,9 @@ import './globals.css';
 import { Analytics } from '@vercel/analytics/react';
 import Nav from './nav';
 import { Suspense } from 'react';
+import { Toaster } from './components/toaster'
+
+// import AuthProvider from './components/authprovider/Authprovider'
 
 export const metadata = {
   title: 'Farmart Drop',
@@ -18,11 +21,14 @@ export default function RootLayout({
   return (
     <html lang="en" className="h-full bg-gray-50">
       <body className="h-full">
+        <Toaster/>
+      {/* <AuthProvider> */}
         <Suspense>
           <Nav />
         </Suspense>
         {children}
         <Analytics />
+        {/* </AuthProvider> */}
       </body>
     </html>
   );

@@ -3,8 +3,7 @@
 import { useState, useCallback, useMemo, ChangeEvent } from 'react'
 import toast from 'react-hot-toast'
 import LoadingDots from '../loading-dots'
-import { Grid } from '@tremor/react'
-// import { BlobResult } from '@vercel/blob'
+import { PutBlobResult } from '@vercel/blob'
 
 export default function Uploader() {
   const [data, setData] = useState<{
@@ -16,12 +15,13 @@ export default function Uploader() {
 
   const [dragActive, setDragActive] = useState(false)
 
+
   const onChangePicture = useCallback(
     (event: ChangeEvent<HTMLInputElement>) => {
       const file = event.currentTarget.files && event.currentTarget.files[0]
       if (file) {
-        if (file.size / 1024 / 1024 > 50) {
-          toast.error('File size too big (max 50MB)')
+        if (file.size / 1024 / 1024 > 1) {
+          toast.error('File size too big (max 1 MB)')
         } else {
           setFile(file)
           const reader = new FileReader()
@@ -42,8 +42,7 @@ export default function Uploader() {
   }, [data.image, saving])
 
   return (
-    <main className="p-4 md:p-10 mx-auto max-w-7xl">
-    <Grid>
+    <main className="p-4 md:p-10 mx-auto max-w-4xl">
     <form
       className="grid gap-6"
       onSubmit={async (e) => {
@@ -55,10 +54,10 @@ export default function Uploader() {
           body: file,
         }).then(async (res) => {
           if (res.status === 200) {
-            // const { url } = (await res.json()) as BlobResult
-            const { url } = (await res.json())
+            const {url} = (await res.json()) as PutBlobResult
+            console.log(url)
             toast(
-              (t: { id: any }) => (
+              (t) => (
                 <div className="relative">
                   <div className="p-2">
                     <p className="font-semibold text-gray-900">
@@ -112,7 +111,7 @@ export default function Uploader() {
         <div className="space-y-1 mb-4">
           <h2 className="text-xl font-semibold">Upload a file</h2>
           <p className="text-sm text-gray-500">
-            Accepted formats: .png, .jpg, .gif, .mp4
+            Accepted formats: .png, .jpg, .gifS
           </p>
         </div>
         <label
@@ -143,8 +142,8 @@ export default function Uploader() {
 
               const file = e.dataTransfer.files && e.dataTransfer.files[0]
               if (file) {
-                if (file.size / 1024 / 1024 > 5) {
-                  toast.error('File size too big (max 5MB)')
+                if (file.size / 1024 / 1024 > 1) {
+                  toast.error('File size too big (max 1 MB)')
                 } else {
                   setFile(file)
                   const reader = new FileReader()
@@ -190,7 +189,7 @@ export default function Uploader() {
               Drag and drop or click to upload.
             </p>
             <p className="mt-2 text-center text-sm text-gray-500">
-              Max file size: 50MB
+              Max file size: 1 MB
             </p>
             <span className="sr-only">Photo upload</span>
           </div>
@@ -230,7 +229,6 @@ export default function Uploader() {
         )}
       </button>
     </form>
-    </Grid>
     </main>
   )
 }
