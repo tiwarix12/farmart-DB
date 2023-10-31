@@ -63,7 +63,7 @@ export default function Login() {
             </div>
             <div className="flex items-center justify-center mt-4">
            
-            <a className="text-black-500 hover:underline">Don't have an account? Sign Up</a>
+            <a className="text-black-500 hover:underline">Dont have an account? Sign Up</a>
           
             </div>
             <div className="flex items-center justify-center mt-4">
