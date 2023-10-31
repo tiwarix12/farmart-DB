@@ -5,7 +5,7 @@ import {
   TableHeaderCell,
   TableBody,
   TableCell,
-  Text
+  Text,
 } from '@tremor/react';
 
 interface User {
@@ -15,7 +15,12 @@ interface User {
   size: string;
 }
 
-export default function UsersTable({ users }: { users: User[] }) {
+interface UsersTableProps {
+  users: User[];
+  onDeleteUser: (id: number,url: string) => void;
+}
+
+export default function UsersTable({ users, onDeleteUser }: UsersTableProps) {
   return (
     <Table>
       <TableHead>
@@ -23,6 +28,7 @@ export default function UsersTable({ users }: { users: User[] }) {
           <TableHeaderCell>Name</TableHeaderCell>
           <TableHeaderCell>Short_URL</TableHeaderCell>
           <TableHeaderCell>Size</TableHeaderCell>
+          <TableHeaderCell>Action</TableHeaderCell>
         </TableRow>
       </TableHead>
       <TableBody>
@@ -35,9 +41,13 @@ export default function UsersTable({ users }: { users: User[] }) {
             <TableCell>
               <Text>{user.size} kb</Text>
             </TableCell>
+            <TableCell>
+            <button onClick={() => onDeleteUser(user.id, user.short_url)}>Delete</button>
+            </TableCell>
           </TableRow>
         ))}
       </TableBody>
     </Table>
   );
 }
+

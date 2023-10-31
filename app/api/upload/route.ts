@@ -1,7 +1,8 @@
 import { sql } from '@vercel/postgres';
-import { PutBlobResult, put } from '@vercel/blob'
+import { PutBlobResult, del, put } from '@vercel/blob'
 import { NextResponse } from 'next/server'
 import { customAlphabet } from 'nanoid'
+import { NextApiRequest } from 'next';
 
 
 export const runtime = 'edge'
@@ -48,3 +49,52 @@ async function saveFileInfoToDatabase(name: string, size: any, blobresult: PutBl
     }
   
 }
+    export async function DELETE(request: Request) {
+      const { searchParams } = new URL(request.url);
+      const urlToDelete = searchParams.get('url') as string;
+
+      try {
+        // Delete the file from Vercel Blob storage
+        await del(urlToDelete);
+        
+        // Return a success response
+        return new Response('File deleted successfully', {
+          status: 200,
+          headers: { 'Content-Type': 'text/plain' },
+        });
+      } catch (error) {
+        // Handle any errors that occur during deletion
+        return new Response('File deletion failed', {
+          status: 500,
+          headers: { 'Content-Type': 'text/plain' },
+        });
+      }
+    }
+// export default async (req: NextApiRequest, res: NextResponse) => {
+//   if (req.method === 'DELETE') {
+//     const fileId = req.query.id as string; // Extract the file ID from the URL
+//     try {
+//       // Step 1: Get the file information from the database
+//       const query = 'SELECT short_url FROM uploaded_files WHERE id = $1';
+//       const result = await sql.query(query, [fileId]);
+//       if (result.rows[0]) {
+//         const { short_url } = result.rows[0];
+
+//         // Step 2: Delete the file from storage
+//         await del(short_url);
+
+//         // Step 3: Delete the file record from the database
+//         const deleteQuery = 'DELETE FROM uploaded_files WHERE id = $1';
+//         await sql.query(deleteQuery, [fileId]);
+
+//         res.status(200).json({ message: 'File deleted successfully' });
+//       } else {
+//         res.status(404).json({ message: 'File not found' });
+//       }
+//     } catch (error) {
+//       res.status(500).json({ message: 'Internal Server Error' });
+//     }
+//   } else {
+//     res.status(405).json({ message: 'Method Not Allowed' });
+//   }
+// };
