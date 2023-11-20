@@ -29,8 +29,14 @@ export default function IndexPage() {
   return (
     <main className="p-4 md:p-10 mx-auto max-w-7xl">
       <Toaster />
-      <Login/>
-      <SignOut/>
+      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+        <h1 style={{ justifyContent: 'center' }}>
+          Welcome to the Farmart Dropbox
+        </h1>
+        <div>
+          <img src="/favicon.ico" alt="favicon" style={{ padding: '100px' }} />
+        </div>
+      </div>
     </main>
   );
 }
