@@ -1,15 +1,8 @@
 {
-    "version": 2,
-    "builds": [
-      { "src": "app/api/delete/route.ts", "use": "@vercel/node" }
-    ],
-    "routes": [
-      { "src": "/api/delete", "method": "DELETE", "dest": "app/api/delete/route.ts" }
-    ],
-    "cron": {
-      "DELETE_AUTOMATICALLY": {
-        "schedule": "0 * * * *",
-        "command": "DELETE_AUTOMATICALLY"
-      }
+  "crons": [
+    {
+      "path": "/api/cron",
+      "schedule": "0 5 * * *"
     }
-  }
+  ]
+}
